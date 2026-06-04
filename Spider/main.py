@@ -134,7 +134,7 @@ class MainSpider:
             if "https:" not in self.res[0]:
                 self.res[0] = "https://" + self.res[0]'''
         #JS
-        self.res = self.driver.execute_script("return document.querySelector('video').src")
+        self.res = [self.driver.execute_script("return document.querySelector('video').src")]
         # XPATH
         tree = etree.HTML(html)
         self.res1 = tree.xpath('//div[starts-with(@class, "thumbnailItem--WQyauvvr")]//img/@src')
