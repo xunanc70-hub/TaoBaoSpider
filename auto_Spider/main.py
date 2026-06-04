@@ -33,6 +33,7 @@ class MainSpider:
         self.res1 = []  # 主图
         self.res2 = []  # 详情页
         self.res3 = []  # SKU
+        self.video = [] # 视频(异常抛出)
 
     def refresh_cookies(self):
         cookies_path = "/Users/lamlam/PycharmProjects/auto_Spider/cookies.json"
@@ -119,6 +120,7 @@ class MainSpider:
                 self.res1 = []
                 self.res2 = []
                 self.res3 = []
+                self.video = []
                 self.get_res_url(goods_url)
                 self.res_cleaning(res_list=self.res)
                 self.res_cleaning(res_list=self.res1)
@@ -201,7 +203,14 @@ class MainSpider:
             if "https:" not in self.res[0]:
                 self.res[0] = "https://" + self.res[0]'''
         # JS
-        self.res = self.driver.execute_script("return document.querySelector('video').src")
+        try:
+            self.video = [self.driver.execute_script("return document.querySelector('video').src")]
+            if self.video:
+                self.res = self.video
+            else:
+                self.res = []
+        except:
+            self.res = []
         # XPATH
         tree = etree.HTML(html)
         self.res1 = tree.xpath('//div[starts-with(@class, "thumbnailItem--WQyauvvr")]//img/@src')
