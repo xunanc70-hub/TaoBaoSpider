@@ -122,14 +122,14 @@ class MainSpider:
                 self.res3 = []
                 self.video = []
                 self.get_res_url(goods_url)
-                self.res_cleaning(res_list=self.res)
-                self.res_cleaning(res_list=self.res1)
-                self.res_cleaning(res_list=self.res2)
-                self.res_cleaning(res_list=self.res3)
-                self.download(goods, goods_name, res_list=self.res, folder_name="视频")
-                self.download(goods, goods_name, res_list=self.res1, folder_name="主图")
-                self.download(goods, goods_name, res_list=self.res2, folder_name="详情页")
-                self.download(goods, goods_name, res_list=self.res3, folder_name="SKU")
+                self.res_cleaning(self.res)
+                self.res_cleaning(self.res1)
+                self.res_cleaning(self.res2)
+                self.res_cleaning(self.res3)
+                self.download(goods, goods_name, self.res, "视频")
+                self.download(goods, goods_name, self.res1, "主图")
+                self.download(goods, goods_name, self.res2, "详情页")
+                self.download(goods, goods_name, self.res3, "SKU")
             print(f"商品下载完毕:{goods}")
             self.driver.close()
 
@@ -237,7 +237,7 @@ class MainSpider:
         res_list.clear()
         res_list.extend(new_res)
 
-    def download(self, goods, goods_name, res_list=None, folder_name=""):
+    def download(self, goods, goods_name, res_list, folder_name):
         # 生成文件夹
         save_dir = os.path.join(goods, goods_name, folder_name)
         if not os.path.exists(save_dir):
@@ -252,16 +252,14 @@ class MainSpider:
                         with open(save_path, "wb") as f:
                             f.write(media.content)
                         print(f"下载成功:{res_url}")
-                        time.sleep(random.uniform(1, 2))
                     else:
                         save_path = os.path.join(save_dir, f"img_{idx}.jpg")
                         with open(save_path, "wb") as f:
                             f.write(media.content)
                         print(f"下载成功:{res_url}")
-                        time.sleep(random.uniform(1, 2))
                 else:
                     print(f"下载失败{media.status_code}:{res_url}")
-                    time.sleep(random.uniform(1, 2))
+                time.sleep(random.uniform(3,6))
             except Exception as err:
                 print(f"error:{err},{res_url}")
 
