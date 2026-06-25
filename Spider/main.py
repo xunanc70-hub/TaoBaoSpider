@@ -161,7 +161,7 @@ class MainSpider:
         res_list.clear()
         res_list.extend(new_res)
 
-    def download(self, res_list=None, folder_name=""):
+    def download(self, res_list, folder_name):
         # 生成文件夹
         save_dir = folder_name
         if not os.path.exists(save_dir):
@@ -176,16 +176,14 @@ class MainSpider:
                         with open(save_path, "wb") as f:
                             f.write(media.content)
                         print(f"下载成功:{res_url}")
-                        time.sleep(random.uniform(1, 2))
                     else:
                         save_path = os.path.join(save_dir, f"img_{idx}.jpg")
                         with open(save_path, "wb") as f:
                             f.write(media.content)
                         print(f"下载成功:{res_url}")
-                        time.sleep(random.uniform(1, 2))
                 else:
                     print(f"下载失败{media.status_code}:{res_url}")
-                    time.sleep(random.uniform(1, 2))
+                time.sleep(random.uniform(3, 6))
             except Exception as err:
                 print(f"error:{err},{res_url}")
 
@@ -198,13 +196,13 @@ if __name__ == "__main__":
         spider.refresh_cookies()
         spider.cookies_login()
         spider.get_res_url()
-        spider.res_cleaning(res_list=spider.res)
-        spider.res_cleaning(res_list=spider.res1)
-        spider.res_cleaning(res_list=spider.res2)
-        spider.res_cleaning(res_list=spider.res3)
-        spider.download(res_list=spider.res, folder_name="视频")
-        spider.download(res_list=spider.res1, folder_name="主图")
-        spider.download(res_list=spider.res2, folder_name="详情页")
-        spider.download(res_list=spider.res3, folder_name="SKU")
+        spider.res_cleaning(spider.res)
+        spider.res_cleaning(spider.res1)
+        spider.res_cleaning(spider.res2)
+        spider.res_cleaning(spider.res3)
+        spider.download(spider.res, "视频")
+        spider.download(spider.res1, "主图")
+        spider.download(spider.res2, "详情页")
+        spider.download(spider.res3, "SKU")
     except Exception as e:
         print(f"error:{e}")
